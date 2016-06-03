@@ -1,0 +1,10 @@
+#########
+#Qt
+#########
+*.exe
+*.user
+Makefile*
+*.o
+moc*
+*.user
+ui*
