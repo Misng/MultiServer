@@ -12,20 +12,21 @@ TimeServer::TimeServer(QObject *parent) :
 
 void TimeServer::incomingConnection(int sockDescriptor)
 {
-        //构建客户端的socket
-        QTcpSocket * socket = new QTcpSocket();
-        if(socket->setSocketDescriptor(sockDescriptor)){
-                qDebug() << socket->state() << socket->socketDescriptor();
-        }else{
-                qDebug() << socket->errorString();
-        }
-
-        ChildThread * thread = new ChildThread(socket);
+        ChildThread * thread = new ChildThread(sockDescriptor,this,"HelloTCP");
         thread->start();
         connect(thread,SIGNAL(finished()),this,SLOT(threadFinshed()));
+        connect(thread,SIGNAL(error(QString)),
+                this,SLOT(displayError(QString)));
+        connect(this,SIGNAL(sendDataToThread(QString)),
+                thread,SLOT(recvFormMainThread(QString)));
 }
 
 void TimeServer::threadFinshed()
 {
         qDebug("thread Findshed");
+}
+
+void TimeServer::displayError(QString errorString)
+{
+        qDebug() << errorString;
 }

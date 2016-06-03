@@ -14,9 +14,10 @@ public:
 protected:
         void incomingConnection(int sockDescriptor);
 signals:
-        
+        void sendDataToThread(QString data);
 public slots:
         void threadFinshed();
+        void displayError(QString errorString);
 };
 
 #endif // TIMESERVER_H

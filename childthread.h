@@ -10,13 +10,17 @@ class ChildThread : public QThread
         Q_OBJECT
 public:
         explicit ChildThread(QObject *parent = 0);
-                 ChildThread(QTcpSocket *socket,QObject *paren=0);
+                 ChildThread(int socketDescriptor, QObject *parent,QString text);
         void run();
 private:
-        QTcpSocket* m_socket;
+        int m_socketDescriptor;
+        QString m_text;
+        bool quit;
 signals:
-//        void error(QTcpSocket::SocketError socketError);
+        void error(QString errorString);
 public slots:
+        void recvFormMainThread(QString str);
+        void recvFormClient(QByteArray block);
         
 };
 
